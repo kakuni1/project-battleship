@@ -3,30 +3,3 @@ idiomatic_version_file_enable_tools = ["node"]
 
 [env]
 _.path = ["{{config_root}}/node_modules/.bin"]
-
-[tasks.setup]
-run = "npm ci"
-
-[tasks.dev]
-run = "npm run dev"
-
-[tasks.build]
-run = "npm run build"
-
-[tasks.preview]
-run = "npm run preview"
-
-[tasks.test]
-run = "npm run test"
-
-[tasks."test:watch"]
-run = "npm run test:watch"
-
-[tasks.lint]
-run = "npm run lint"
-
-[tasks.format]
-run = "npm run format"
-
-[tasks."format:check"]
-run = "npm run format:check"
