@@ -33,10 +33,7 @@ export class GameController {
     playerOneType = PlayerType.REAL,
     playerTwoType = PlayerType.CPU,
   ) {
-    this.#players = [
-      new Player(playerOneName, playerOneType),
-      new Player(playerTwoName, playerTwoType),
-    ];
+    this.#players = [new Player(playerOneName, playerOneType), new Player(playerTwoName, playerTwoType)];
     this.#activePlayer = 0;
     this.#phase = GAMEPHASE.PLACE;
     this.#winner = null;
@@ -47,22 +44,19 @@ export class GameController {
   }
 
   placeShip(index, key, name, direction) {
-    if (this.phase !== GAMEPHASE.PLACE)
-      throw new Error("controller placeShip, not in 'place' phase");
+    if (this.phase !== GAMEPHASE.PLACE) throw new Error("controller placeShip, not in 'place' phase");
 
     return this.getPlayer(index).gameboard.placeShip(key, name, direction);
   }
 
   removeShip(index, name) {
-    if (this.phase !== GAMEPHASE.PLACE)
-      throw new Error("controller removeShip, not in 'place' phase");
+    if (this.phase !== GAMEPHASE.PLACE) throw new Error("controller removeShip, not in 'place' phase");
 
     return this.getPlayer(index).gameboard.removeShip(name);
   }
 
   resetBoard(index) {
-    if (this.phase !== GAMEPHASE.PLACE)
-      throw new Error("controller resetBoard, not in 'place' phase");
+    if (this.phase !== GAMEPHASE.PLACE) throw new Error("controller resetBoard, not in 'place' phase");
 
     return this.getPlayer(index).gameboard.reset();
   }
@@ -75,26 +69,21 @@ export class GameController {
   }
 
   startGame() {
-    if (this.phase !== GAMEPHASE.PLACE)
-      throw new Error("controller start game, not in 'place' phase");
+    if (this.phase !== GAMEPHASE.PLACE) throw new Error("controller start game, not in 'place' phase");
 
     const active = this.getPlayer(this.activePlayer);
     const opponent = this.getPlayer(this.opponentPlayer);
 
     if (active.type === PlayerType.CPU) this.#autoPlace(this.activePlayer);
     if (opponent.type === PlayerType.CPU) this.#autoPlace(this.opponentPlayer);
-    if (
-      active.gameboard.fleetDone !== true ||
-      opponent.gameboard.fleetDone !== true
-    )
+    if (active.gameboard.fleetDone !== true || opponent.gameboard.fleetDone !== true)
       throw new Error("controller start game, fleets not yet fully placed");
 
     this.#phase = GAMEPHASE.PLAY;
   }
 
   playTurn(key) {
-    if (this.phase !== GAMEPHASE.PLAY)
-      throw new Error("controller process turn, must be in phase 'play'");
+    if (this.phase !== GAMEPHASE.PLAY) throw new Error("controller process turn, must be in phase 'play'");
 
     const attacker = this.activePlayer;
     const opponent = this.getPlayer(this.opponentPlayer);
@@ -117,9 +106,7 @@ export class GameController {
     const result = opponent.gameboard.receiveAttack(targetKey);
 
     // on sink, record cells for ship sunk
-    const cells = result.sunk
-      ? opponent.gameboard.shipCells(result.name)
-      : null;
+    const cells = result.sunk ? opponent.gameboard.shipCells(result.name) : null;
 
     // record all cpu attacks
     if (isCpu) this.#cpuDeck[attacker].recordAttack(targetKey, result);
@@ -128,8 +115,7 @@ export class GameController {
     if (opponent.gameboard.allSunk === true) {
       this.#winner = this.activePlayer;
       this.#phase = GAMEPHASE.GAMEOVER;
-    } else if (result.result === SHIP_STATES.MISS)
-      this.#activePlayer = this.opponentPlayer;
+    } else if (result.result === SHIP_STATES.MISS) this.#activePlayer = this.opponentPlayer;
 
     return {
       attacker,
@@ -144,10 +130,8 @@ export class GameController {
   }
 
   getPlayer(index) {
-    if (!Number.isInteger(index))
-      throw new Error("controller getPlayer, must be integer");
-    if (index < 0 || index > 1)
-      throw new Error("controller getPlayer, out of bounds");
+    if (!Number.isInteger(index)) throw new Error("controller getPlayer, must be integer");
+    if (index < 0 || index > 1) throw new Error("controller getPlayer, out of bounds");
     return this.#players[index];
   }
 

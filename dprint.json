@@ -1,8 +1,16 @@
 {
-  "toml": {},
+  "lineWidth": 120,
+  "json": {},
+  "markup": {},
+  "markdown": {
+    "lineWidth": 80,
+    "textWrap": "maintainAndWrap"
+  },
   "excludes": ["**/node_modules", "**/*-lock.json"],
   "plugins": [
-    "https://plugins.dprint.dev/toml-0.8.0.wasm",
-    "https://plugins.dprint.dev/g-plane/markup_fmt-v0.27.3.wasm"
+    "npm:@dprint/json",
+    "npm:dprint-plugin-markup",
+    "npm:@dprint/markdown",
+    "npm:dprint-plugin-yaml"
   ]
 }

@@ -35,8 +35,6 @@ describe("Player", () => {
   });
 
   it("invalid player type, throw error", () => {
-    expect(() => new Player("a player name", "abc")).toThrow(
-      "player, invalid type",
-    );
+    expect(() => new Player("a player name", "abc")).toThrow("player, invalid type");
   });
 });

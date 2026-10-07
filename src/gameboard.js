@@ -29,8 +29,7 @@ export class Gameboard {
     }
 
     // wrap check
-    if (!fitsBoard(key, entry.length, direction))
-      throw new Error("place, out of bounds");
+    if (!fitsBoard(key, entry.length, direction)) throw new Error("place, out of bounds");
 
     // overlap check
     const cells = spanCells(key, entry.length, direction);
@@ -97,10 +96,7 @@ export class Gameboard {
   }
 
   get allSunk() {
-    return (
-      this.#ships.size > 0 &&
-      this.#ships.values().every(({ ship }) => ship.isSunk)
-    );
+    return this.#ships.size > 0 && this.#ships.values().every(({ ship }) => ship.isSunk);
   }
 
   shipAt(key) {
@@ -110,8 +106,7 @@ export class Gameboard {
     const ship = this.#grid[key];
     if (ship === null) return null;
 
-    for (const [name, entry] of this.#ships)
-      if (entry.ship === ship) return { name, isSunk: ship.isSunk };
+    for (const [name, entry] of this.#ships) if (entry.ship === ship) return { name, isSunk: ship.isSunk };
 
     return null;
   }
@@ -144,7 +139,6 @@ export class Gameboard {
 
   #validateKey(key, prefix) {
     if (!Number.isInteger(key)) throw new Error(`${prefix}, must be integer`);
-    if (key < 0 || key >= SIZE * SIZE)
-      throw new Error(`${prefix}, out of bounds`);
+    if (key < 0 || key >= SIZE * SIZE) throw new Error(`${prefix}, out of bounds`);
   }
 }

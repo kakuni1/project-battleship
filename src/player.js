@@ -11,8 +11,7 @@ export class Player {
   #type;
 
   constructor(name, type = PlayerType.REAL) {
-    if (!Object.values(PlayerType).includes(type))
-      throw new Error("player, invalid type");
+    if (!Object.values(PlayerType).includes(type)) throw new Error("player, invalid type");
     this.#gameboard = new Gameboard();
     this.#name = name ?? (type === PlayerType.REAL ? "Player 1" : "Computer");
     this.#type = type;

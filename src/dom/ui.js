@@ -3,15 +3,7 @@ import { DELAY_MS, DIRECTIONS, FLEET, SIZE } from "../constants.js";
 import { GAMEPHASE, SHIP_STATES } from "../controller.js";
 import { calcCol, calcRow, fitsBoard, sleep, spanCells } from "../grid.js";
 import { icons } from "./icons.js";
-import {
-  buildQueue,
-  clearBoard,
-  clearPreview,
-  markShips,
-  renderPreview,
-  updateBoard,
-  updateQueue,
-} from "./render.js";
+import { buildQueue, clearBoard, clearPreview, markShips, renderPreview, updateBoard, updateQueue } from "./render.js";
 
 const BOARD_MESSAGE = Object.freeze({
   PLAYER: "Your Fleet",
@@ -109,9 +101,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
   }
 
   function placedShipNames() {
-    return new Set(
-      controller.getPlayer(0).gameboard.fleetShips.map((ship) => ship.name),
-    );
+    return new Set(controller.getPlayer(0).gameboard.fleetShips.map((ship) => ship.name));
   }
 
   function lastShip() {
@@ -186,8 +176,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
     // player turn
     busy = true;
     const turn = controller.playTurn(key);
-    if (turn.result === SHIP_STATES.DUPLICATE)
-      statusEl.textContent = "Already attacked";
+    if (turn.result === SHIP_STATES.DUPLICATE) statusEl.textContent = "Already attacked";
     else if (turn.result === SHIP_STATES.HIT)
       statusEl.textContent = `${controller.getPlayer(0).name} hit ${turn.ship}!`;
     else statusEl.textContent = `${controller.getPlayer(0).name} missed`;
@@ -202,11 +191,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
 
     repaint();
     // extra delay for single board setup
-    if (
-      !controller.isGameOver &&
-      turn.result !== SHIP_STATES.HIT &&
-      turn.result !== SHIP_STATES.DUPLICATE
-    )
+    if (!controller.isGameOver && turn.result !== SHIP_STATES.HIT && turn.result !== SHIP_STATES.DUPLICATE)
       await sleep(DELAY_MS.PLAYER);
 
     // cpu, keeps turn on 'hit'
@@ -240,8 +225,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
       repaint();
 
       // keep cpu message
-      if (cpuTurn.result === SHIP_STATES.HIT && !controller.isGameOver)
-        await sleep(DELAY_MS.PLAYER);
+      if (cpuTurn.result === SHIP_STATES.HIT && !controller.isGameOver) await sleep(DELAY_MS.PLAYER);
     }
 
     busy = false;
@@ -251,11 +235,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
   }
 
   function onPlacementKeyDown(event) {
-    const isRotateKey =
-      event.key.toLowerCase() === "r" &&
-      !event.ctrlKey &&
-      !event.altKey &&
-      !event.metaKey;
+    const isRotateKey = event.key.toLowerCase() === "r" && !event.ctrlKey && !event.altKey && !event.metaKey;
 
     if (!isRotateKey || controller.phase !== GAMEPHASE.PLACE) return;
 
@@ -280,8 +260,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
 
     repaint();
     buttonStartEl.disabled = true;
-    buttonUndoEl.disabled =
-      controller.getPlayer(0).gameboard.fleetShips.length === 0;
+    buttonUndoEl.disabled = controller.getPlayer(0).gameboard.fleetShips.length === 0;
     statusEl.textContent = `Place: ${currentShip()}`;
     refreshPreview();
   }
@@ -368,12 +347,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
     }
 
     const gameboard = controller.getPlayer(0).gameboard;
-    const { cells, valid } = highlightShip(
-      previewKey,
-      ship.length,
-      direction,
-      gameboard,
-    );
+    const { cells, valid } = highlightShip(previewKey, ship.length, direction, gameboard);
     renderPreview(playerBoard, cells, valid);
   }
 
@@ -399,8 +373,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
   }
 
   function syncTurn() {
-    const isPlay =
-      controller.phase === GAMEPHASE.PLAY && !controller.isGameOver;
+    const isPlay = controller.phase === GAMEPHASE.PLAY && !controller.isGameOver;
 
     if (!isPlay) {
       gameEl.removeAttribute("data-turn");
@@ -413,17 +386,12 @@ export function init(controller, { playerBoard, enemyBoard }) {
     gameEl.dataset.turn = controller.activePlayer;
     turnStatusEl.hidden = false;
     turnStatusEl.textContent =
-      controller.activePlayer === 0
-        ? `${controller.getPlayer(0).name}'s turn`
-        : `${activePlayer.name}'s turn`;
+      controller.activePlayer === 0 ? `${controller.getPlayer(0).name}'s turn` : `${activePlayer.name}'s turn`;
   }
 
   function syncBoard() {
     gameEl.dataset.board = activeBoard;
-    boardLabelNode.nodeValue =
-      activeBoard === BOARDS.PLAYER
-        ? BOARD_MESSAGE.ENEMY
-        : BOARD_MESSAGE.PLAYER;
+    boardLabelNode.nodeValue = activeBoard === BOARDS.PLAYER ? BOARD_MESSAGE.ENEMY : BOARD_MESSAGE.PLAYER;
   }
 
   function onToggleBoard() {
@@ -435,8 +403,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
     gameEl.dataset.phase = controller.phase;
     const interact = controller.phase === GAMEPHASE.PLACE;
     buttonToggleBoardEl.hidden = interact;
-    for (const button of queueEl.querySelectorAll("button"))
-      button.disabled = !interact;
+    for (const button of queueEl.querySelectorAll("button")) button.disabled = !interact;
     syncTurn();
     if (controller.isGameOver) gameoverEl.showModal();
     else gameoverEl.close();
@@ -445,9 +412,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
   // setup event listeners
   document.addEventListener("keydown", onPlacementKeyDown);
   playerBoard.addEventListener("click", onClickPlace);
-  playerBoard.addEventListener("keydown", (e) =>
-    onBoardKeyDown(e, onClickPlace),
-  );
+  playerBoard.addEventListener("keydown", (e) => onBoardKeyDown(e, onClickPlace));
   playerBoard.addEventListener("pointerover", previewShip);
   playerBoard.addEventListener("focusin", previewShip);
   playerBoard.addEventListener("pointerleave", clearPlayerPreview);
@@ -457,9 +422,7 @@ export function init(controller, { playerBoard, enemyBoard }) {
     clearPlayerPreview();
   });
   enemyBoard.addEventListener("click", onClickAttack);
-  enemyBoard.addEventListener("keydown", (e) =>
-    onBoardKeyDown(e, onClickAttack),
-  );
+  enemyBoard.addEventListener("keydown", (e) => onBoardKeyDown(e, onClickAttack));
   queueEl.addEventListener("click", onSelect);
   buttonToggleBoardEl.addEventListener("click", onToggleBoard);
   buttonUndoEl.addEventListener("click", onUndo);

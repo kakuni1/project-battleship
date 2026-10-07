@@ -4,8 +4,7 @@ import { shuffle } from "./shuffle.js";
 
 export function autoFleet(board, maxRestarts = 10) {
   // retry with wiped board if stuck
-  for (let attempt = 0; attempt < maxRestarts; attempt++)
-    if (randomFleet(board)) return board;
+  for (let attempt = 0; attempt < maxRestarts; attempt++) if (randomFleet(board)) return board;
   throw new Error("cpu fleet, multiple restarts, unable to place ships");
 }
 

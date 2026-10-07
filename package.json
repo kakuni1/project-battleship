@@ -5,13 +5,36 @@
     "build": "vite build --base=./",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "lint": "biome lint .",
+    "format": "biome format --write . && dprint fmt && rumdl fmt . && tombi format .",
+    "format:check": "biome ci --formatter-enabled=true --linter-enabled=false --assist-enabled=false . && dprint check && rumdl check . && tombi format --check ."
   },
   "dependencies": {
     "lucide": "^1.46.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@dprint/json": "0.25.2",
+    "@dprint/markdown": "0.26.0",
+    "dprint": "0.60.1",
+    "dprint-plugin-markup": "0.27.5",
+    "dprint-plugin-yaml": "0.6.0",
+    "rumdl": "^0.2.78",
+    "tombi": "^1.7.2",
     "vite": "^8.0.0",
     "vitest": "^4.0.0"
+  },
+  "engines": {
+    "node": "^24"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24"
+    }
+  },
+  "allowScripts": {
+    "dprint": true
   }
 }

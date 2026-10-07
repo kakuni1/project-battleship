@@ -1,44 +1,32 @@
-[tools]
-"node" = "lts"
-"biome" = "2"
-"dprint" = "0"
+[settings]
+idiomatic_version_file_enable_tools = ["node"]
+
+[env]
+_.path = ["{{config_root}}/node_modules/.bin"]
 
 [tasks.setup]
-description = "Install tools & dependencies"
-run = "mise install && npm install"
+run = "npm ci"
 
 [tasks.dev]
-description = "Start Vite dev server"
 run = "npm run dev"
 
 [tasks.build]
-description = "Build production site"
 run = "npm run build"
 
 [tasks.preview]
-description = "Preview the built site"
 run = "npm run preview"
 
-[tasks.fmt]
-description = "Auto-format source files"
-run = "biome check --write . && dprint fmt"
-
-[tasks.fmt-check]
-description = "Check formatting only"
-run = "biome ci . && dprint check"
-
-[tasks.lint]
-description = "Lint source files"
-run = "biome lint ."
-
 [tasks.test]
-description = "Run Vitest tests"
 run = "npm run test"
 
-[tasks.test-watch]
-description = "Run Vitest in watch mode"
+[tasks."test:watch"]
 run = "npm run test:watch"
 
-[tasks.ci]
-description = "Run all CI checks"
-depends = ["fmt-check", "lint", "test"]
+[tasks.lint]
+run = "npm run lint"
+
+[tasks.format]
+run = "npm run format"
+
+[tasks."format:check"]
+run = "npm run format:check"

@@ -57,12 +57,9 @@ export function updateBoard(boardEl, gameboard) {
 
 export function clearBoard(boardEl) {
   for (const cell of boardEl.querySelectorAll(".cell")) {
-    for (const shipClass of Object.values(SHIP_CLASSES))
-      cell.classList.remove(shipClass);
-    for (const borderClass of Object.values(SUNK_BORDER_CLASSES))
-      cell.classList.remove(borderClass);
-    for (const previewClass of Object.values(PREVIEW_CLASSES))
-      cell.classList.remove(previewClass);
+    for (const shipClass of Object.values(SHIP_CLASSES)) cell.classList.remove(shipClass);
+    for (const borderClass of Object.values(SUNK_BORDER_CLASSES)) cell.classList.remove(borderClass);
+    for (const previewClass of Object.values(PREVIEW_CLASSES)) cell.classList.remove(previewClass);
   }
 }
 

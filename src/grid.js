@@ -1,9 +1,7 @@
 import { DIRECTIONS, SIZE } from "./constants.js";
 
 export function spanCells(key, length, direction) {
-  return Array.from({ length }, (_, i) =>
-    direction === "horizontal" ? key + i : key + i * SIZE,
-  );
+  return Array.from({ length }, (_, i) => (direction === "horizontal" ? key + i : key + i * SIZE));
 }
 
 export function fitsBoard(key, length, direction) {

@@ -2,17 +2,10 @@ import { describe, expect, it } from "vitest";
 import { GameController } from "./controller.js";
 import { PlayerType } from "./player.js";
 
-const FLEET_NAMES = [
-  "Carrier",
-  "Battleship",
-  "Cruiser",
-  "Submarine",
-  "Destroyer",
-];
+const FLEET_NAMES = ["Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"];
 
 function placeFleet(game, index) {
-  for (const [i, name] of FLEET_NAMES.entries())
-    game.placeShip(index, i * 10, name, "horizontal");
+  for (const [i, name] of FLEET_NAMES.entries()) game.placeShip(index, i * 10, name, "horizontal");
 }
 
 describe("GameController", () => {
@@ -54,9 +47,7 @@ describe("GameController", () => {
     const game = new GameController();
     placeFleet(game, 0);
     game.startGame();
-    expect(() => game.removeShip(0, "Destroyer")).toThrow(
-      "controller removeShip, not in 'place' phase",
-    );
+    expect(() => game.removeShip(0, "Destroyer")).toThrow("controller removeShip, not in 'place' phase");
   });
 
   it("resetBoard, clear placed ships", () => {
@@ -70,48 +61,30 @@ describe("GameController", () => {
 
   it("startGame, real & cpu, real fleet incomplete, throw error", () => {
     const game = new GameController();
-    expect(() => game.startGame()).toThrow(
-      "controller start game, fleets not yet fully placed",
-    );
+    expect(() => game.startGame()).toThrow("controller start game, fleets not yet fully placed");
   });
 
   it("startGame, game phase already in 'play', throw error", () => {
     const game = new GameController();
     placeFleet(game, 0);
     game.startGame();
-    expect(() => game.startGame()).toThrow(
-      "controller start game, not in 'place' phase",
-    );
+    expect(() => game.startGame()).toThrow("controller start game, not in 'place' phase");
   });
 
   it("startGame, resetBoard after game start, throw error", () => {
     const game = new GameController();
     placeFleet(game, 0);
     game.startGame();
-    expect(() => game.resetBoard(0)).toThrow(
-      "controller resetBoard, not in 'place' phase",
-    );
+    expect(() => game.resetBoard(0)).toThrow("controller resetBoard, not in 'place' phase");
   });
 
   it("startGame, both real, both real fleets incomplete, throw error", () => {
-    const game = new GameController(
-      "Alice",
-      "Bob",
-      PlayerType.REAL,
-      PlayerType.REAL,
-    );
-    expect(() => game.startGame()).toThrow(
-      "controller start game, fleets not yet fully placed",
-    );
+    const game = new GameController("Alice", "Bob", PlayerType.REAL, PlayerType.REAL);
+    expect(() => game.startGame()).toThrow("controller start game, fleets not yet fully placed");
   });
 
   it("startGame, both cpu, both cpu fleets auto-placed", () => {
-    const game = new GameController(
-      "Computer 1",
-      "Computer 2",
-      PlayerType.CPU,
-      PlayerType.CPU,
-    );
+    const game = new GameController("Computer 1", "Computer 2", PlayerType.CPU, PlayerType.CPU);
     game.startGame();
     expect(game.getPlayer(0).gameboard.fleetDone).toBe(true);
     expect(game.getPlayer(1).gameboard.fleetDone).toBe(true);
@@ -142,30 +115,16 @@ describe("GameController", () => {
 
   it("playTurn, not in phase 'play', throw error", () => {
     const game = new GameController();
-    expect(() => game.playTurn(0)).toThrow(
-      "controller process turn, must be in phase 'play'",
-    );
+    expect(() => game.playTurn(0)).toThrow("controller process turn, must be in phase 'play'");
   });
 
   it("playTurn, game not started, throw error", () => {
-    const game = new GameController(
-      "Computer 1",
-      "Computer 2",
-      PlayerType.CPU,
-      PlayerType.CPU,
-    );
-    expect(() => game.playTurn(0)).toThrow(
-      "controller process turn, must be in phase 'play'",
-    );
+    const game = new GameController("Computer 1", "Computer 2", PlayerType.CPU, PlayerType.CPU);
+    expect(() => game.playTurn(0)).toThrow("controller process turn, must be in phase 'play'");
   });
 
   it("playTurn, win ends game", () => {
-    const game = new GameController(
-      "Alice",
-      "Bob",
-      PlayerType.REAL,
-      PlayerType.REAL,
-    );
+    const game = new GameController("Alice", "Bob", PlayerType.REAL, PlayerType.REAL);
     game.placeShip(0, 0, "Carrier", "horizontal");
     game.placeShip(0, 10, "Battleship", "horizontal");
     game.placeShip(0, 20, "Cruiser", "horizontal");
@@ -220,12 +179,7 @@ describe("GameController", () => {
   });
 
   it("playTurn, turn after game ends, throw error", () => {
-    const game = new GameController(
-      "Alice",
-      "Bob",
-      PlayerType.REAL,
-      PlayerType.REAL,
-    );
+    const game = new GameController("Alice", "Bob", PlayerType.REAL, PlayerType.REAL);
     game.placeShip(0, 0, "Carrier", "horizontal");
     game.placeShip(0, 10, "Battleship", "horizontal");
     game.placeShip(0, 20, "Cruiser", "horizontal");
@@ -270,18 +224,11 @@ describe("GameController", () => {
     game.playTurn(40);
     game.playTurn(40);
     game.playTurn(41);
-    expect(() => game.playTurn(41)).toThrow(
-      "controller process turn, must be in phase 'play'",
-    );
+    expect(() => game.playTurn(41)).toThrow("controller process turn, must be in phase 'play'");
   });
 
   it("playTurn, keep turn on 'hit', swap on 'miss'", () => {
-    const game = new GameController(
-      "Alice",
-      "Bob",
-      PlayerType.REAL,
-      PlayerType.REAL,
-    );
+    const game = new GameController("Alice", "Bob", PlayerType.REAL, PlayerType.REAL);
     game.placeShip(0, 0, "Carrier", "horizontal");
     game.placeShip(0, 10, "Battleship", "horizontal");
     game.placeShip(0, 20, "Cruiser", "horizontal");
@@ -312,12 +259,7 @@ describe("GameController", () => {
   });
 
   it("reset game", () => {
-    const game = new GameController(
-      "Alice",
-      "Bob",
-      PlayerType.REAL,
-      PlayerType.REAL,
-    );
+    const game = new GameController("Alice", "Bob", PlayerType.REAL, PlayerType.REAL);
     placeFleet(game, 0);
     placeFleet(game, 1);
     game.startGame();
@@ -367,27 +309,14 @@ describe("GameController", () => {
 
   it("getPlayer, invalid index, throw error", () => {
     const game = new GameController();
-    expect(() => game.getPlayer(2)).toThrow(
-      "controller getPlayer, out of bounds",
-    );
-    expect(() => game.getPlayer(-1)).toThrow(
-      "controller getPlayer, out of bounds",
-    );
-    expect(() => game.getPlayer(undefined)).toThrow(
-      "controller getPlayer, must be integer",
-    );
-    expect(() => game.getPlayer(0.5)).toThrow(
-      "controller getPlayer, must be integer",
-    );
+    expect(() => game.getPlayer(2)).toThrow("controller getPlayer, out of bounds");
+    expect(() => game.getPlayer(-1)).toThrow("controller getPlayer, out of bounds");
+    expect(() => game.getPlayer(undefined)).toThrow("controller getPlayer, must be integer");
+    expect(() => game.getPlayer(0.5)).toThrow("controller getPlayer, must be integer");
   });
 
   it("playTurn, duplicate attack, return 'duplicate', reject turn", () => {
-    const game = new GameController(
-      "Alice",
-      "Bob",
-      PlayerType.REAL,
-      PlayerType.REAL,
-    );
+    const game = new GameController("Alice", "Bob", PlayerType.REAL, PlayerType.REAL);
     game.placeShip(0, 0, "Carrier", "horizontal");
     game.placeShip(0, 10, "Battleship", "horizontal");
     game.placeShip(0, 20, "Cruiser", "horizontal");
@@ -418,12 +347,7 @@ describe("GameController", () => {
   });
 
   it("playTurn, cpu vs cpu, run game to completion", () => {
-    const game = new GameController(
-      "Computer 1",
-      "Computer 2",
-      PlayerType.CPU,
-      PlayerType.CPU,
-    );
+    const game = new GameController("Computer 1", "Computer 2", PlayerType.CPU, PlayerType.CPU);
     game.startGame();
 
     let turn = 0;
@@ -447,8 +371,7 @@ describe("GameController", () => {
     expect(loser.gameboard.allSunk).toBe(true);
 
     let hit = 0;
-    for (let key = 0; key < 100; key++)
-      if (loser.gameboard.resultAt(key) === "hit") hit += 1;
+    for (let key = 0; key < 100; key++) if (loser.gameboard.resultAt(key) === "hit") hit += 1;
     expect(hit).toBe(17);
   });
 });

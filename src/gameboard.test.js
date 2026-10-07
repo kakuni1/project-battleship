@@ -9,63 +9,44 @@ describe("Gameboard", () => {
 
   it("integer check, non-integer throw error", () => {
     const board = new Gameboard();
-    expect(() => board.placeShip([0, 1.1], "Destroyer", "horizontal")).toThrow(
-      "place, must be integer",
-    );
-    expect(() => board.placeShip(1.1, "Destroyer", "h")).toThrow(
-      "place, must be integer",
-    );
-    expect(() => board.placeShip(-Infinity, "Destroyer", "h")).toThrow(
-      "place, must be integer",
-    );
-    expect(() => board.placeShip(NaN, "Destroyer", "h")).toThrow(
-      "place, must be integer",
-    );
+    expect(() => board.placeShip([0, 1.1], "Destroyer", "horizontal")).toThrow("place, must be integer");
+    expect(() => board.placeShip(1.1, "Destroyer", "h")).toThrow("place, must be integer");
+    expect(() => board.placeShip(-Infinity, "Destroyer", "h")).toThrow("place, must be integer");
+    expect(() => board.placeShip(NaN, "Destroyer", "h")).toThrow("place, must be integer");
   });
 
   it("check for valid ship name (number)", () => {
     const board = new Gameboard();
-    expect(() => board.placeShip(0, 1, "horizontal")).toThrow(
-      "place, invalid ship name",
-    );
+    expect(() => board.placeShip(0, 1, "horizontal")).toThrow("place, invalid ship name");
   });
 
   it("check for valid ship name, (non-integer number)", () => {
     const board = new Gameboard();
-    expect(() => board.placeShip(0, 2.5, "horizontal")).toThrow(
-      "place, invalid ship name",
-    );
+    expect(() => board.placeShip(0, 2.5, "horizontal")).toThrow("place, invalid ship name");
   });
 
   it("cannot place a ship after a miss, game started, throw error", () => {
     const board = new Gameboard();
     board.receiveAttack(0);
-    expect(() => board.placeShip(0, "Destroyer", "horizontal")).toThrow(
-      "place, game already started",
-    );
+    expect(() => board.placeShip(0, "Destroyer", "horizontal")).toThrow("place, game already started");
   });
 
   it("cannot place a ship after a hit, game started, throw error", () => {
     const board = new Gameboard();
     board.placeShip(0, "Destroyer", "horizontal");
     board.receiveAttack(0);
-    expect(() => board.placeShip(10, "Carrier", "horizontal")).toThrow(
-      "place, game already started",
-    );
+    expect(() => board.placeShip(10, "Carrier", "horizontal")).toThrow("place, game already started");
   });
 
   it("check for valid direction", () => {
     const board = new Gameboard();
-    expect(() => board.placeShip(0, "Destroyer", "x")).toThrow(
-      "place, invalid direction",
-    );
+    expect(() => board.placeShip(0, "Destroyer", "x")).toThrow("place, invalid direction");
   });
 
   it("place ship (2), horizontal", () => {
     const board = new Gameboard();
     board.placeShip(0, "Destroyer", "horizontal");
-    for (const cell of [0, 1])
-      expect(board.shipAt(cell)).toEqual({ name: "Destroyer", isSunk: false });
+    for (const cell of [0, 1]) expect(board.shipAt(cell)).toEqual({ name: "Destroyer", isSunk: false });
   });
 
   it("place ship (5), vertical", () => {
@@ -78,32 +59,24 @@ describe("Gameboard", () => {
 
   it("place ship (5), vertical, completely out of bounds", () => {
     const board = new Gameboard();
-    expect(() => board.placeShip(-55, "Carrier", "vertical")).toThrow(
-      "place, out of bounds",
-    );
+    expect(() => board.placeShip(-55, "Carrier", "vertical")).toThrow("place, out of bounds");
   });
 
   it("place ship (2), horizontal, extends out of bounds", () => {
     const board = new Gameboard();
-    expect(() => board.placeShip(99, "Destroyer", "horizontal")).toThrow(
-      "place, out of bounds",
-    );
+    expect(() => board.placeShip(99, "Destroyer", "horizontal")).toThrow("place, out of bounds");
   });
 
   it("place ships (2) & (3), overlap", () => {
     const board = new Gameboard();
     board.placeShip(0, "Destroyer", "horizontal");
-    expect(() => board.placeShip(0, "Submarine", "horizontal")).toThrow(
-      "place, cell occupied",
-    );
+    expect(() => board.placeShip(0, "Submarine", "horizontal")).toThrow("place, cell occupied");
   });
 
   it("place ships (2) & (3), overlap, retry continues & succeeds", () => {
     const board = new Gameboard();
     board.placeShip(0, "Destroyer", "horizontal");
-    expect(() => board.placeShip(1, "Submarine", "horizontal")).toThrow(
-      "place, cell occupied",
-    );
+    expect(() => board.placeShip(1, "Submarine", "horizontal")).toThrow("place, cell occupied");
     const ship = board.placeShip(55, "Carrier", "vertical");
     expect(ship.length).toBe(5);
   });
@@ -111,9 +84,7 @@ describe("Gameboard", () => {
   it("place ship (2) & (2), duplicate, no overlap, throws error", () => {
     const board = new Gameboard();
     board.placeShip(0, "Destroyer", "horizontal");
-    expect(() => board.placeShip(55, "Destroyer", "vertical")).toThrow(
-      "place, ship already placed",
-    );
+    expect(() => board.placeShip(55, "Destroyer", "vertical")).toThrow("place, ship already placed");
   });
 
   it("ship (2), receive attack (1), isSunk false", () => {
@@ -132,9 +103,7 @@ describe("Gameboard", () => {
   it("integer check, attack, infinity non-integer", () => {
     const board = new Gameboard();
     board.placeShip(0, "Destroyer", "horizontal");
-    expect(() => board.receiveAttack(-Infinity)).toThrow(
-      "attack, must be integer",
-    );
+    expect(() => board.receiveAttack(-Infinity)).toThrow("attack, must be integer");
   });
 
   it("ship (2), receive attack (2), isSunk true", () => {
@@ -359,22 +328,17 @@ describe("Gameboard", () => {
   it("place ship (2), horizontal, edge fit, last cells of row, succeeds", () => {
     const board = new Gameboard();
     board.placeShip(8, "Destroyer", "horizontal");
-    for (const cell of [8, 9])
-      expect(board.shipAt(cell)).toEqual({ name: "Destroyer", isSunk: false });
+    for (const cell of [8, 9]) expect(board.shipAt(cell)).toEqual({ name: "Destroyer", isSunk: false });
   });
 
   it("place ship (2), horizontal, wraps to next row, throws", () => {
     const board = new Gameboard();
-    expect(() => board.placeShip(9, "Destroyer", "horizontal")).toThrow(
-      "place, out of bounds",
-    );
+    expect(() => board.placeShip(9, "Destroyer", "horizontal")).toThrow("place, out of bounds");
   });
 
   it("place ship (5), vertical, extends past bottom edge, throw error", () => {
     const board = new Gameboard();
-    expect(() => board.placeShip(75, "Carrier", "vertical")).toThrow(
-      "place, out of bounds",
-    );
+    expect(() => board.placeShip(75, "Carrier", "vertical")).toThrow("place, out of bounds");
   });
 
   it("remove ship (2) from grid, horizontal, return null", () => {
@@ -388,8 +352,7 @@ describe("Gameboard", () => {
     const board = new Gameboard();
     board.placeShip(12, "Carrier", "vertical");
     board.removeShip("Carrier");
-    for (const cell of [12, 22, 32, 42, 52])
-      expect(board.shipAt(cell)).toBeNull();
+    for (const cell of [12, 22, 32, 42, 52]) expect(board.shipAt(cell)).toBeNull();
   });
 
   it("place same ship after removal", () => {
@@ -398,8 +361,7 @@ describe("Gameboard", () => {
     board.removeShip("Destroyer");
     for (const cell of [0, 1]) expect(board.shipAt(cell)).toBeNull();
     board.placeShip(0, "Destroyer", "horizontal");
-    for (const cell of [0, 1])
-      expect(board.shipAt(cell)).toEqual({ name: "Destroyer", isSunk: false });
+    for (const cell of [0, 1]) expect(board.shipAt(cell)).toEqual({ name: "Destroyer", isSunk: false });
   });
 
   it("place different ship on removed cells", () => {
@@ -407,8 +369,7 @@ describe("Gameboard", () => {
     board.placeShip(0, "Destroyer", "horizontal");
     board.removeShip("Destroyer");
     board.placeShip(0, "Carrier", "horizontal");
-    for (const cell of [0, 1, 2, 3, 4])
-      expect(board.shipAt(cell)).toEqual({ name: "Carrier", isSunk: false });
+    for (const cell of [0, 1, 2, 3, 4]) expect(board.shipAt(cell)).toEqual({ name: "Carrier", isSunk: false });
   });
 
   it("removal doesnt affect other ships", () => {
@@ -418,33 +379,26 @@ describe("Gameboard", () => {
     board.removeShip("Destroyer");
     for (const cell of [0, 1]) expect(board.shipAt(cell)).toBeNull();
     board.placeShip(0, "Carrier", "vertical");
-    for (const cell of [55, 65, 75])
-      expect(board.shipAt(cell)).toEqual({ name: "Submarine", isSunk: false });
+    for (const cell of [55, 65, 75]) expect(board.shipAt(cell)).toEqual({ name: "Submarine", isSunk: false });
   });
 
   it("ship not placed, throw error", () => {
     const board = new Gameboard();
-    expect(() => board.removeShip("Destroyer")).toThrow(
-      "remove, ship not yet placed",
-    );
+    expect(() => board.removeShip("Destroyer")).toThrow("remove, ship not yet placed");
   });
 
   it("cannot remove a ship after a miss, throw error", () => {
     const board = new Gameboard();
     board.placeShip(0, "Destroyer", "horizontal");
     board.receiveAttack(5);
-    expect(() => board.removeShip("Destroyer")).toThrow(
-      "remove, game already started",
-    );
+    expect(() => board.removeShip("Destroyer")).toThrow("remove, game already started");
   });
 
   it("cannot remove a ship after a hit, throw error", () => {
     const board = new Gameboard();
     board.placeShip(0, "Destroyer", "horizontal");
     board.receiveAttack(0);
-    expect(() => board.removeShip("Destroyer")).toThrow(
-      "remove, game already started",
-    );
+    expect(() => board.removeShip("Destroyer")).toThrow("remove, game already started");
   });
 
   it("cannot reset after a miss, throw error", () => {
@@ -483,9 +437,7 @@ describe("Gameboard", () => {
     board.placeShip(0, "Destroyer", "horizontal");
     board.receiveAttack(0);
     board.receiveAttack(1);
-    expect(board.fleetShips).toEqual([
-      { name: "Destroyer", cells: [0, 1], isSunk: true },
-    ]);
+    expect(board.fleetShips).toEqual([{ name: "Destroyer", cells: [0, 1], isSunk: true }]);
   });
 
   it("getter fleetShips (multi-ship), returns copies, no mutations", () => {
@@ -520,9 +472,7 @@ describe("Gameboard", () => {
     expect(() => board.shipCells("Shippy")).toThrow("shipCells, unknown ship");
     expect(board.shipCells("Destroyer")).toEqual([0, 1]);
     board.removeShip("Destroyer");
-    expect(() => board.shipCells("Destroyer")).toThrow(
-      "shipCells, unknown ship",
-    );
+    expect(() => board.shipCells("Destroyer")).toThrow("shipCells, unknown ship");
 
     board.placeShip(0, "Destroyer", "horizontal");
     board.receiveAttack(0);
