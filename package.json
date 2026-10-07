@@ -8,7 +8,10 @@
     "test:watch": "vitest",
     "lint": "biome lint .",
     "format": "biome format --write . && dprint fmt && rumdl fmt . && tombi format .",
-    "format:check": "biome ci --formatter-enabled=true --linter-enabled=false --assist-enabled=false . && dprint check && rumdl check . && tombi format --check ."
+    "format:check": "biome ci --formatter-enabled=true --linter-enabled=false --assist-enabled=false . && dprint check && rumdl check . && tombi format --check .",
+    "deps:check": "npm outdated",
+    "deps:update": "npm update",
+    "deps:audit": "npm audit"
   },
   "dependencies": {
     "lucide": "^1.46.0"
