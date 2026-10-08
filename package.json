@@ -21,7 +21,6 @@
   "devDependencies": {
     "@biomejs/biome": "^2.x",
     "@dprint/json": "^0.x",
-    "@dprint/markdown": "^0.x",
     "dprint": "^0.x",
     "dprint-plugin-markup": "^0.x",
     "dprint-plugin-yaml": "^0.x",
