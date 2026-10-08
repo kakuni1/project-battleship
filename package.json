@@ -9,24 +9,26 @@
     "lint": "biome lint .",
     "format": "biome format --write . && dprint fmt && rumdl fmt . && tombi format .",
     "format:check": "biome ci --formatter-enabled=true --linter-enabled=false --assist-enabled=false . && dprint check && rumdl check . && tombi format --check .",
+    "deps:audit": "npm audit",
     "deps:check": "npm outdated",
     "deps:update": "npm update",
-    "deps:audit": "npm audit"
+    "mise:trust": "mise trust",
+    "mise:setup": "mise install && mise exec -- npm ci"
   },
   "dependencies": {
-    "lucide": "^1.46.0"
+    "lucide": "1.52.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.15",
-    "@dprint/json": "0.25.2",
-    "@dprint/markdown": "0.26.0",
-    "dprint": "0.60.1",
-    "dprint-plugin-markup": "0.27.5",
-    "dprint-plugin-yaml": "0.6.0",
-    "rumdl": "^0.2.78",
-    "tombi": "^1.7.2",
-    "vite": "^8.0.0",
-    "vitest": "^4.0.0"
+    "@biomejs/biome": "^2.x",
+    "@dprint/json": "^0.x",
+    "@dprint/markdown": "^0.x",
+    "dprint": "^0.x",
+    "dprint-plugin-markup": "^0.x",
+    "dprint-plugin-yaml": "^0.x",
+    "rumdl": "^0.x",
+    "tombi": "^1.x",
+    "vite": "^8.x",
+    "vitest": "^4.x"
   },
   "engines": {
     "node": "^24"
