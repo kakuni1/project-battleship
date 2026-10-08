@@ -12,6 +12,7 @@
     "deps:audit": "npm audit",
     "deps:check": "npm outdated",
     "deps:update": "npm update",
+    "deps:sync": "npm install --package-lock-only",
     "mise:trust": "mise trust",
     "mise:setup": "mise install && mise exec -- npm ci"
   },
